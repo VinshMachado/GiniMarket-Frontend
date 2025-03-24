@@ -6,3 +6,7 @@
 .font-poppins {
   font-family: Poppins, sans-serif;
 }
+
+.text-shadowed {
+  text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+}

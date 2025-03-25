@@ -20,11 +20,20 @@ const Howitworkscards = () => {
 
     " View an overview of your purchased stocks, including their current value, performance, and potential growth within your portfolio.",
   ];
+  const image = [
+    "/key.png",
+    "/login.png",
+    "/explore.png",
+    "/buy.png",
+    "/preview.png",
+  ];
   return (
     <>
-      {titlles.map((data, index) => {
-        return <Cards title={data} desc={desc[index]} />;
-      })}
+      <div className="h-auto sm:w-11/12 flex flex-wrap sm:bg-[#F6EC72] sm:m-3  sm:mb-20 sm:rounded-4xl">
+        {titlles.map((data, index) => {
+          return <Cards title={data} desc={desc[index]} image={image[index]} />;
+        })}
+      </div>
     </>
   );
 };

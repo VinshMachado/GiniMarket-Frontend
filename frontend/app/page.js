@@ -4,10 +4,11 @@ import Navbar from "./CostomComp/Navbar";
 import Heros from "./CostomComp/heros";
 import Cards from "./CostomComp/cards";
 import Howitworkscards from "./CostomComp/Howitworkscards";
+import Footer from "./CostomComp/Footer";
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <Navbar />
       <Heros />
       <div className="w-full sm:h-36 h-28  text-2xl sm:text-5xl flex justify-center bg-[#09A599] text-white  mb-10 mt-8 font-poppins items-center">
@@ -31,6 +32,7 @@ export default function Home() {
         How It Works?
       </div>
       <Howitworkscards />
+      <Footer />
     </div>
   );
 }

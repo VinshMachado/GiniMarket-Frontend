@@ -5,12 +5,18 @@ import Heros from "./CostomComp/heros";
 import Cards from "./CostomComp/cards";
 import Howitworkscards from "./CostomComp/Howitworkscards";
 import Footer from "./CostomComp/Footer";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
       <Navbar />
+
       <Heros />
+      <Button className="text-white mt-10 text-xl shadow-sm shadow-black bg-[#1684A7] mb-6 rounded-full">
+        {" "}
+        Lets Get Started!
+      </Button>
       <div className="w-full sm:h-36 h-28  text-2xl sm:text-5xl flex justify-center bg-[#09A599] text-white  mb-10 mt-8 font-poppins items-center">
         About <p className="text-[#F6EC72]  pl-3 font-bold "> Gini</p>
         Market

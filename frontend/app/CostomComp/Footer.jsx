@@ -44,7 +44,7 @@ const Footer = () => {
       {/* Left section with brand and social icons */}
       <div>
         <h1 className="w-full text-3xl lg:text-4xl xl:text-5xl font-bold text-[#00df9a]">
-          REACT.
+          GINI.
         </h1>
         <p className="py-4">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id odit

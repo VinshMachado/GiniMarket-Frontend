@@ -13,9 +13,10 @@ export default function Home() {
       <Navbar />
 
       <Heros />
-      <Button className="text-white mt-10 text-xl shadow-sm shadow-black bg-[#1684A7] mb-6 rounded-full">
+
+      <Button className="text-white mt-10 text-xl shadow-lg shadow-gray-500 bg-[#1684A7] mb-6 rounded-full">
         {" "}
-        Lets Get Started!
+        <Link href="/signin">Lets Get Started!</Link>
       </Button>
       <div className="w-full sm:h-36 h-28  text-2xl sm:text-5xl flex justify-center bg-[#09A599] text-white  mb-10 mt-8 font-poppins items-center">
         About <p className="text-[#F6EC72]  pl-3 font-bold "> Gini</p>

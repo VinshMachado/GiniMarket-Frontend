@@ -31,7 +31,14 @@ const Howitworkscards = () => {
     <>
       <div className="h-auto sm:w-11/12 flex flex-wrap sm:bg-[#F6EC72] sm:m-3  sm:mb-20 sm:rounded-4xl">
         {titlles.map((data, index) => {
-          return <Cards title={data} desc={desc[index]} image={image[index]} />;
+          return (
+            <Cards
+              title={data}
+              key={index}
+              desc={desc[index]}
+              image={image[index]}
+            />
+          );
         })}
       </div>
     </>

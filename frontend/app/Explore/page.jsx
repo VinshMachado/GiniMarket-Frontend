@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ExploreCard from "../CostomComp/ExploreCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Link } from "lucide-react";
 
 const page = () => {
   const [stocks, setstocks] = useState([]);
@@ -39,6 +40,9 @@ const page = () => {
       {stocks.map((data) => {
         return (
           <ExploreCard
+            key={data._id}
+            link={`Explore/${data._id}`}
+            href={`Explore/${data._id}`}
             image={data.ImageUrl}
             name={data.StockName}
             price={parseFloat(data.ShareValue.toFixed(2))}

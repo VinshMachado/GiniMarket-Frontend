@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import ExploreCard from "../CostomComp/ExploreCard";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const page = () => {
-  const [stocks, setstocks] = useState();
+  const [stocks, setstocks] = useState([]);
   const fetchStocks = async () => {
     try {
       let url = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -31,8 +32,19 @@ const page = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen bg-green-300 flex justify-center items-center">
-      <ExploreCard />
+    <div
+      className="w-full h-screen   bg-gray-50
+   flex justify-start pt-10 items-center flex-col"
+    >
+      {stocks.map((data) => {
+        return (
+          <ExploreCard
+            image={data.ImageUrl}
+            name={data.StockName}
+            price={parseFloat(data.ShareValue.toFixed(2))}
+          />
+        );
+      })}
     </div>
   );
 };

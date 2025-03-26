@@ -10,8 +10,6 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
-      <Navbar />
-
       <Heros />
 
       <Button className="text-white mt-10 text-xl shadow-lg shadow-gray-500 bg-[#1684A7] mb-6 rounded-full">

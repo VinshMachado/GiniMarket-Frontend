@@ -6,7 +6,7 @@ const ExploreCard = (Props) => {
   return (
     <Card
       className={
-        "sm:w-1/2 w-full  h-20 bg-green-100 flex justify-between items-center flex-row"
+        "sm:w-1/2 w-full m-2 h-20 bg-white flex justify-between items-center flex-row hover:shadow-green-400"
       }
     >
       <Avatar className={" ml-5 h-16 w-16"}>

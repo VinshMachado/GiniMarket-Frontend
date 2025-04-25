@@ -34,7 +34,7 @@ const page = () => {
 
   return (
     <div
-      className="w-full h-screen   bg-gray-50
+      className="w-full h-screen md:pl-64 md:pr-64  bg-gray-50
    flex justify-start pt-10 items-center flex-col"
     >
       {stocks.map((data) => {

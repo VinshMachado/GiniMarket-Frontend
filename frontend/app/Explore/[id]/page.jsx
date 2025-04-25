@@ -1,7 +1,9 @@
 "use client";
+import { LineChat } from "./Stockchat";
 
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Stockdetails } from "./Stockdetails";
 
 const page = () => {
   const { id } = useParams();
@@ -38,7 +40,24 @@ const page = () => {
     getData();
   }, []);
   return (
-    <div>{stockdetails.StockName ? stockdetails.StockName : "Loading"}</div>
+    <div className="w-full flex flex-col  justify-center items-center">
+      <div className="w-full flex justify-center items-center  flex-wrap h-auto">
+        <LineChat
+          stockname={
+            stockdetails.StockName ? stockdetails.StockName : "Loading"
+          }
+        />
+        <Stockdetails
+          image={stockdetails.ImageUrl}
+          name={stockdetails.StockName}
+          desc={stockdetails.Desc}
+          price={stockdetails.ShareValue}
+          os={stockdetails.OSshares}
+          equiped={stockdetails.EqupiedShares}
+        />
+      </div>
+      hello
+    </div>
   );
 };
 

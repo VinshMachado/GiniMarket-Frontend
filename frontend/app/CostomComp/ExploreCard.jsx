@@ -5,10 +5,13 @@ import Link from "next/link";
 
 const ExploreCard = (Props) => {
   return (
-    <Link href={Props.link} className="w-full flex justify-center items-center">
+    <Link
+      href={Props.link}
+      className="w-full flex justify-center items-center "
+    >
       <Card
         className={
-          "sm:w-1/2 w-full m-2  h-20 bg-white flex justify-between items-center flex-row hover:shadow-green-400"
+          "sm:w-full w-full m-2  h-20 bg-white flex justify-between   items-center flex-row hover:shadow-green-400"
         }
       >
         <Avatar className={" ml-5 h-16 w-16"}>

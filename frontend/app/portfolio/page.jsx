@@ -19,7 +19,7 @@ const page = () => {
       },
     });
     if (!data.ok) {
-      alert("somthing went wrong");
+      alert("Failed to fetch data");
     }
     setdata(await data.json());
   };

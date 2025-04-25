@@ -5,14 +5,17 @@ import ExploreCard from "../CostomComp/ExploreCard";
 
 const page = () => {
   const [data, setdata] = useState(null);
-  console.log(localStorage.getItem("TOKEN"));
+  let jwt = "";
+  useEffect(() => {
+    jwt = localStorage.getItem("TOKEN");
+  }, []);
 
   let fetchdata = async () => {
     let data = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/data`, {
       method: "GET",
 
       headers: {
-        authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+        authorization: `Bearer ${jwt}`,
       },
     });
     if (!data.ok) {

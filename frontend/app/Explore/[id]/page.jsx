@@ -47,6 +47,7 @@ const page = () => {
             stockdetails.StockName ? stockdetails.StockName : "Loading"
           }
         />
+
         <Stockdetails
           image={stockdetails.ImageUrl}
           name={stockdetails.StockName}

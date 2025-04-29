@@ -30,7 +30,7 @@ export function LoginForm({ className, ...props }) {
   //storing token//
   let getToken = async () => {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL;
-    
+
     await fetch(`${url}/user/login`, {
       method: "POST",
       headers: {
@@ -45,11 +45,12 @@ export function LoginForm({ className, ...props }) {
       .then((data) => {
         localStorage.setItem("TOKEN", data.token);
         console.log("token stored");
+        console.log(data.token);
 
-        router.push("/");
+        router.push("/Explore");
       })
       .catch((e) => {
-        console.error("Error:", e);
+        alert("server must be down try in 1min");
       });
   };
   return (

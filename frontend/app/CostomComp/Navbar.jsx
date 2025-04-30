@@ -15,12 +15,7 @@ const Navbar = () => {
         >
           Login
         </Link>
-        <Link
-          className="ml-5  hover:border-b-2 hover:border-black pb-2 font-poppins"
-          href="/signin "
-        >
-          Sign In
-        </Link>
+
         <Link
           className="ml-5  hover:border-b-2 hover:border-black font-poppins pb-2"
           href="/Explore"

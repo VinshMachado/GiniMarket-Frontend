@@ -61,11 +61,17 @@ export const Stockdetails = (Props) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
           },
-          body: JSON.stringify({ name: Props.name, qty: qty }),
+          body: JSON.stringify({
+            name: Props.name,
+            qty: qty,
+            stockImg: Props.image,
+            stockId: Props.id,
+          }),
         }
       );
       console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`);
       console.log(responce);
+      console.log(Props.image, Props.id);
       console.log("success");
     } catch (e) {
       alert(e);
@@ -177,7 +183,7 @@ export const Stockdetails = (Props) => {
               onChange={(e) => setqty(Number(e.target.value))}
             ></input>
             <AlertDialogAction>
-              <Button className="bg-red-500 text-white" onClick={buystock}>
+              <Button className="bg-red-500 text-white" onClick={sellstock}>
                 Sell
               </Button>
             </AlertDialogAction>

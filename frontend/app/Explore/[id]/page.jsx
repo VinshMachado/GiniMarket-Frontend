@@ -49,6 +49,7 @@ const page = () => {
         />
 
         <Stockdetails
+          id={stockdetails._id}
           image={stockdetails.ImageUrl}
           name={stockdetails.StockName}
           desc={stockdetails.Desc}

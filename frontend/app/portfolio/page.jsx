@@ -4,8 +4,14 @@ import { Component } from "./Piechart";
 import ExploreCard from "../CostomComp/ExploreCard";
 import Link from "next/link";
 import { PortfolioCard } from "./PortfolioCard";
+import { io } from "socket.io-client";
 
 const page = () => {
+  const server = io("http://localhost:4000");
+
+  server.on("connection", (id) => {
+    console.log(id);
+  });
   const [Userdata, setdata] = useState([]);
   let jwt = "";
   useEffect(() => {

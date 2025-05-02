@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -79,9 +80,9 @@ export function LoginForm({ className, ...props }) {
             </div>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="/signin" className="underline underline-offset-4">
+              <Link href="/signin" className="underline underline-offset-4">
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </CardContent>

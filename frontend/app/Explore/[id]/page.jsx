@@ -8,6 +8,7 @@ import { Stockdetails } from "./Stockdetails";
 const page = () => {
   const { id } = useParams();
   const [stockdetails, setstockdetail] = useState({});
+
   const getData = async () => {
     console.log("ID:", id); // Ensure this logs correctly
 
@@ -46,6 +47,7 @@ const page = () => {
           stockname={
             stockdetails.StockName ? stockdetails.StockName : "Loading"
           }
+          stockid={stockdetails._id}
         />
 
         <Stockdetails

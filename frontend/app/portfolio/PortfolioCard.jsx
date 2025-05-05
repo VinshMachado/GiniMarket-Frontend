@@ -24,7 +24,9 @@ export const PortfolioCard = (Props) => {
           Value:{" " + Math.round(Props.price * Props.qty * 100) / 100}
         </CardTitle>
         <div className="h-full w-36  flex flex-col justify-center items-center">
-          <CardTitle>{Props.qty}</CardTitle>
+          <CardTitle>
+            {Props.qty + " X "} <b>{Props.price}</b>
+          </CardTitle>
         </div>
       </Card>
     </Link>

@@ -17,14 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "", desktop: 186 },
-  { month: "", desktop: 305 },
-  { month: "", desktop: 237 },
-  { month: "", desktop: 73 },
-  { month: "", desktop: 209 },
-  { month: "", desktop: 214 },
-];
+import { useState } from "react";
 
 const chartConfig = {
   desktop: {
@@ -34,6 +27,10 @@ const chartConfig = {
 };
 
 export function LineChat(Props) {
+  const [chartData, setdata] = useState([
+    { month: "", desktop: 186 },
+    { month: "", desktop: 305 },
+  ]);
   return (
     <Card className="sm:w-3/5">
       <CardHeader>
@@ -77,9 +74,20 @@ export function LineChat(Props) {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing Live Graph Of{` ${Props.stockname}`}
+          Showing Live Graph Of{` ${Props.stockname},${Props.stockid}`}
         </div>
       </CardFooter>
+      <button
+        onClick={() => {
+          setdata([
+            { month: "", desktop: 1286 },
+            { month: "", desktop: 3035 },
+          ]);
+          console.log("clicked");
+        }}
+      >
+        click mee
+      </button>
     </Card>
   );
 }

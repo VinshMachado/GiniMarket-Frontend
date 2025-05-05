@@ -9,16 +9,19 @@ import { io } from "socket.io-client";
 const page = () => {
   const [stocks, setstocks] = useState([]);
   const [stockprices, setstockprices] = useState([]);
+  let jwt = "";
+  useEffect(() => {
+    jwt = `${localStorage.getItem("TOKEN")}`;
+  });
   const fetchStocks = async () => {
     try {
       let url = process.env.NEXT_PUBLIC_BACKEND_URL;
       console.log("Backend URL:", url);
-      console.log(localStorage.getItem("TOKEN"));
 
       const response = await fetch(`${url}/stock/getstocks`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+          Authorization: `Bearer ${jwt}`,
         },
       });
       console.log("came til here");
@@ -35,7 +38,7 @@ const page = () => {
 
   const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
     auth: {
-      token: `${localStorage.getItem("TOKEN")}`,
+      token: `${jwt}`,
     },
   });
 

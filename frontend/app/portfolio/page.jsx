@@ -12,6 +12,8 @@ const page = () => {
 
   let jwt = "";
 
+  //fetching users stock holdings
+
   let fetchdata = async () => {
     console.log(jwt);
     console.log("hi");
@@ -37,6 +39,8 @@ const page = () => {
     jwt = localStorage.getItem("TOKEN");
     fetchdata();
   }, []);
+
+  // socket config //
   const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
     auth: {
       token: jwt,
@@ -59,10 +63,7 @@ const page = () => {
           let shareprice = stockprices.find(
             (item) => item._id === data.stockId
           )?.ShareValue;
-          shareprice = Number(shareprice).toFixed(2); // returns string like "21.20"
-          shareprice = parseFloat(shareprice);
-
-          shareprice = parseFloat(shareprice.toFixed(2));
+          shareprice = Math.round(shareprice * 100) / 100;
           return (
             <PortfolioCard
               image={data.stockImg}

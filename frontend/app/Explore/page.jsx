@@ -9,10 +9,13 @@ import { io } from "socket.io-client";
 const page = () => {
   const [stocks, setstocks] = useState([]);
   const [stockprices, setstockprices] = useState([]);
+  //jwt fetching
   let jwt = "";
   useEffect(() => {
     jwt = `${localStorage.getItem("TOKEN")}`;
   });
+
+  //fetching the stock data
   const fetchStocks = async () => {
     try {
       let url = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -36,6 +39,8 @@ const page = () => {
     fetchStocks();
   }, []);
 
+  //socket config
+
   const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
     auth: {
       token: `${jwt}`,
@@ -50,6 +55,8 @@ const page = () => {
     setstockprices(data);
     console.log(stockprices);
   });
+
+  //main part
 
   return (
     <div

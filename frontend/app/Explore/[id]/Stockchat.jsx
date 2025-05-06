@@ -1,4 +1,6 @@
 "use client";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
 
 import { TrendingUp } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
@@ -28,9 +30,45 @@ const chartConfig = {
 
 export function LineChat(Props) {
   const [chartData, setdata] = useState([
-    { month: "", desktop: 186 },
-    { month: "", desktop: 305 },
+    {
+      month: "",
+      desktop: Props.price,
+    },
   ]);
+
+  let jwt = "";
+
+  useEffect(() => {
+    jwt = localStorage.getItem("TOKEN");
+  }, []);
+
+  // socket config //
+  const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+    auth: {
+      token: jwt,
+    },
+  });
+
+  server.on("connect", () => {
+    console.log("socketid:", server.id);
+  });
+  server.on("price-change", (data) => {
+    let datawanted = data.filter((item) => item._id == Props.stockid);
+    if (data) {
+      setdata((prev) => {
+        const newEntry = {
+          month: "",
+          desktop: datawanted[0]?.ShareValue,
+        };
+
+        const graph = [...prev, newEntry];
+        if (chartData.length > 2) graph.shift();
+
+        return graph; // ✅ return the updated array
+      });
+    }
+  });
+
   return (
     <Card className="sm:w-3/5">
       <CardHeader>
@@ -77,17 +115,6 @@ export function LineChat(Props) {
           Showing Live Graph Of{` ${Props.stockname},${Props.stockid}`}
         </div>
       </CardFooter>
-      <button
-        onClick={() => {
-          setdata([
-            { month: "", desktop: 1286 },
-            { month: "", desktop: 3035 },
-          ]);
-          console.log("clicked");
-        }}
-      >
-        click mee
-      </button>
     </Card>
   );
 }

@@ -22,8 +22,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Pie, PieChart } from "recharts";
 import { Button } from "@/components/ui/button";
+import { io } from "socket.io-client";
 
 export const Stockdetails = (Props) => {
+  const [price, setprice] = useState(0);
+  let jwt = "";
   const chartData = [
     {
       browser: "chrome",
@@ -77,6 +80,7 @@ export const Stockdetails = (Props) => {
       alert(e);
     }
   };
+
   const sellstock = async () => {
     try {
       let responce = await fetch(
@@ -97,29 +101,53 @@ export const Stockdetails = (Props) => {
     }
   };
 
+  useEffect(() => {
+    jwt = localStorage.getItem("TOKEN");
+  }, []);
+
+  // socket config //
+  const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+    auth: {
+      token: jwt,
+    },
+  });
+
+  server.on("connect", () => {
+    console.log("socketid:", server.id);
+  });
+  server.on("price-change", (data) => {
+    let datawanted = data.filter((item) => item._id == Props.id);
+
+    setprice(datawanted[0].ShareValue ?? 0);
+    console;
+  });
+
   return (
     <Card
       className={
-        "sm:w-1/3 h-[630px] w-full m-2   bg-white flex justify-between   border-0 items-center flex-col hover:shadow-green-400"
+        "sm:w-1/3 h-[630px] w-full m-2 bg-white flex justify-between border-0 items-center flex-col hover:shadow-green-400"
       }
     >
-      <div className="h-full w-full  flex  justify-center items-center">
-        <Avatar className={" ml-5 h-16 w-16"}>
+      <div className="h-full w-full flex justify-center items-center">
+        <Avatar className={"ml-5 h-16 w-16"}>
           <AvatarImage src={Props.image} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <CardTitle>{Props.name}</CardTitle>
       </div>
+
       <div className="w-full h-auto pl-5 pr-5">
         <CardTitle className={"mr-6"}>Description</CardTitle>
         <p className="text-left">{Props.desc}</p>
       </div>
-      <div className="h-full w-full  flex  justify-center items-center">
+
+      <div className="h-full w-full flex justify-center items-center">
         <CardTitle>Current Price:</CardTitle>
         <CardTitle className="ml-2">
-          {(Math.floor(Props.price * 100) / 100).toFixed(2)}
+          {(Math.floor(price * 100) / 100).toFixed(2)}
         </CardTitle>
       </div>
+
       <div className="w-full h-auto pl-5 pr-5">
         <ChartContainer
           config={chartConfig}
@@ -140,26 +168,27 @@ export const Stockdetails = (Props) => {
         </ChartContainer>
       </div>
 
-      <div className="h-full w-full  flex  justify-center items-center">
-        <CardTitle>OS Shares Vs Equipped Shares </CardTitle>
+      <div className="h-full w-full flex justify-center items-center">
+        <CardTitle>OS Shares Vs Equipped Shares</CardTitle>
       </div>
+
       <div className="w-full flex items-center justify-center">
-        {/* alert thing */}
+        {/* Buy Alert Dialog */}
         <AlertDialog>
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <Button className="bg-green-500 text-white">Buy</Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white w-64 h-46 flex justify-center items-center flex-col">
             <AlertDialogHeader>
               <AlertDialogTitle>Enter the Qty</AlertDialogTitle>
-            </AlertDialogHeader>{" "}
+            </AlertDialogHeader>
             <input
               type="number"
               min="1"
               className="w-1/2 h-16 border-black border-2"
               onChange={(e) => setqty(Number(e.target.value))}
-            ></input>
-            <AlertDialogAction>
+            />
+            <AlertDialogAction asChild>
               <Button className="bg-green-500 text-white" onClick={buystock}>
                 Buy
               </Button>
@@ -167,22 +196,22 @@ export const Stockdetails = (Props) => {
           </AlertDialogContent>
         </AlertDialog>
 
-        {/*sell alert */}
+        {/* Sell Alert Dialog */}
         <AlertDialog>
-          <AlertDialogTrigger>
+          <AlertDialogTrigger asChild>
             <Button className="bg-red-500 text-white ml-5">Sell</Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white w-64 h-46 flex justify-center items-center flex-col">
             <AlertDialogHeader>
               <AlertDialogTitle>Enter the Qty</AlertDialogTitle>
-            </AlertDialogHeader>{" "}
+            </AlertDialogHeader>
             <input
               type="number"
               min="1"
               className="w-1/2 h-16 border-black border-2"
               onChange={(e) => setqty(Number(e.target.value))}
-            ></input>
-            <AlertDialogAction>
+            />
+            <AlertDialogAction asChild>
               <Button className="bg-red-500 text-white" onClick={sellstock}>
                 Sell
               </Button>

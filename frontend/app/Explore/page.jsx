@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 const page = () => {
   const [stocks, setstocks] = useState([]);
   const [stockprices, setstockprices] = useState([]);
+  const [color, setcolor] = useState([]);
   //jwt fetching
   let jwt = "";
   useEffect(() => {
@@ -51,9 +52,9 @@ const page = () => {
     console.log("socketid:", server.id);
   });
 
-  server.on("price-change", (data) => {
+  server.on("price-change", (data, data2) => {
     setstockprices(data);
-    console.log(stockprices);
+    setcolor(data2);
   });
 
   //main part
@@ -63,11 +64,12 @@ const page = () => {
       className="w-full h-screen md:pl-64 md:pr-64  bg-gray-50
    flex justify-start pt-10 items-center flex-col"
     >
-      {stocks.map((data) => {
+      {stocks.map((data, i) => {
         let shareprice = stockprices.find(
           (item) => item._id === data._id
         )?.ShareValue;
         shareprice = Math.round(shareprice * 100) / 100;
+
         return (
           <ExploreCard
             key={data._id}
@@ -76,6 +78,7 @@ const page = () => {
             image={data.ImageUrl}
             name={data.StockName}
             price={shareprice}
+            color={color[i]}
           />
         );
       })}

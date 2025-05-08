@@ -9,6 +9,7 @@ import { io, Socket } from "socket.io-client";
 const page = () => {
   const [Userdata, setdata] = useState([]);
   const [stockprices, setstockprices] = useState([]);
+  const [color, setcolor] = useState([]);
 
   let jwt = "";
 
@@ -51,15 +52,16 @@ const page = () => {
     console.log("socketid:", server.id);
   });
 
-  server.on("price-change", (data) => {
+  server.on("price-change", (data, color) => {
     setstockprices(data);
+    setcolor(color);
   });
 
   return (
     <div className="sm:flex sm:p-14 w-full justify-center items-center">
       <Component />
       <div className="w-full sm:p-14 h-full flex flex-col items center overflow-auto">
-        {Userdata.map((data) => {
+        {Userdata.map((data, i) => {
           let shareprice = stockprices.find(
             (item) => item._id === data.stockId
           )?.ShareValue;
@@ -72,6 +74,7 @@ const page = () => {
               link={`Explore/${data.stockId}`}
               key={data.stockId}
               qty={data.stockQuantity}
+              color={color[i]}
             />
           );
         })}

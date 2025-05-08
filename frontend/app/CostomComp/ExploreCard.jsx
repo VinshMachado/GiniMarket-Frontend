@@ -1,9 +1,22 @@
+"use client";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
 const ExploreCard = (Props) => {
+  const [color, setcolor] = useState("mr-6");
+
+  let colorselector = () => {
+    console.log(Props.color);
+    if (Props.color) {
+      setcolor("mr-6 text-green-600");
+    } else {
+      setcolor("mr-6 text-red-600");
+      console.log(Props.color);
+    }
+  };
+  useEffect(colorselector, [Props.color]);
   return (
     <Link
       href={Props.link}
@@ -23,7 +36,7 @@ const ExploreCard = (Props) => {
           <p>{Props.desc}</p>
         </div>
 
-        <CardTitle className={"mr-6"}>Price:{Props.price}</CardTitle>
+        <CardTitle className={color}>{Props.price}</CardTitle>
       </Card>
     </Link>
   );

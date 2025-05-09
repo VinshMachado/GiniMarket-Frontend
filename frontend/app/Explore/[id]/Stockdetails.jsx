@@ -26,6 +26,7 @@ import { io } from "socket.io-client";
 
 export const Stockdetails = (Props) => {
   const [price, setprice] = useState(0);
+  const [color, setcolor] = useState(false);
   let jwt = "";
   const chartData = [
     {
@@ -115,11 +116,14 @@ export const Stockdetails = (Props) => {
   server.on("connect", () => {
     console.log("socketid:", server.id);
   });
-  server.on("price-change", (data) => {
-    let datawanted = data.filter((item) => item._id == Props.id);
+  server.on("price-change", (data, color) => {
+    // Find the index of the item with matching _id
+    const index = data.findIndex((item) => item._id === Props.id);
 
-    setprice(datawanted[0].ShareValue ?? 0);
-    console;
+    if (index !== -1) {
+      setprice(data[index].ShareValue ?? 0);
+      setcolor(color[index]);
+    }
   });
 
   return (
@@ -143,7 +147,9 @@ export const Stockdetails = (Props) => {
 
       <div className="h-full w-full flex justify-center items-center">
         <CardTitle>Current Price:</CardTitle>
-        <CardTitle className="ml-2">
+        <CardTitle
+          className={color ? "ml-2 text-green-500" : "ml-2 text-red-500"}
+        >
           {(Math.floor(price * 100) / 100).toFixed(2)}
         </CardTitle>
       </div>

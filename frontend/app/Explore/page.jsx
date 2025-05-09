@@ -69,6 +69,9 @@ const page = () => {
           (item) => item._id === data._id
         )?.ShareValue;
         shareprice = Math.round(shareprice * 100) / 100;
+        if (!(typeof shareprice === "number" && !isNaN(shareprice))) {
+          shareprice = "--";
+        }
 
         return (
           <ExploreCard

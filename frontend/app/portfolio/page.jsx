@@ -70,10 +70,18 @@ const page = () => {
             <PortfolioCard
               image={data.stockImg}
               name={data.stockName}
-              price={shareprice}
+              price={
+                typeof shareprice === "number" && !isNaN(shareprice)
+                  ? shareprice ?? 0
+                  : 0
+              }
               link={`Explore/${data.stockId}`}
               key={data.stockId}
-              qty={data.stockQuantity}
+              qty={
+                typeof shareprice === "number" && !isNaN(shareprice)
+                  ? data.stockQuantity ?? 0
+                  : 0
+              }
               color={color[i]}
             />
           );

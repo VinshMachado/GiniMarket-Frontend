@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Label, Pie, PieChart } from "recharts";
-
+import { io } from "socket.io-client";
 
 import {
   Card,
@@ -19,13 +20,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
 
 const chartConfig = {
   visitors: {
@@ -39,24 +33,74 @@ const chartConfig = {
     label: "Safari",
     color: "hsl(var(--chart-2))",
   },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
 };
 
-export function Component() {
+export function Component(props) {
+  const [chartData, setfinaldata] = useState([
+    { browser: "chrome", visitors: 270, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  ]);
+  const [userdata, setuserdata] = useState({});
+  const [ShareHoldings, setshare] = useState([]);
+  const [stockprices, setstockprices] = useState([]);
+  let jwt = "";
+
   const totalVisitors = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  }, [chartData]);
+
+  useEffect(() => {
+    jwt = localStorage.getItem("TOKEN");
+  });
+
+  //setting data from props//
+  useEffect(() => {
+    setuserdata(props.userdata);
+    setshare(props.userdata.ShareHoldings);
+  }, [props.userdata]);
+
+  useEffect(() => {
+    const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+      auth: {
+        token: jwt,
+      },
+    });
+    const handlePriceChange = (data, color) => {
+      setstockprices(data);
+      setcolor(color);
+    };
+    server.on("price-change", handlePriceChange);
+    return () => {
+      server.off("price-change", handlePriceChange);
+      server.disconnect();
+    };
   }, []);
+
+  useEffect(() => {
+    console.log("fron chart", stockprices);
+    let temp = 0;
+    let bal = 0;
+
+    ShareHoldings.map((data, i) => {
+      let shareprice = stockprices.find(
+        (item) => item._id === data.stockId
+      )?.ShareValue;
+      shareprice = Math.round(shareprice * 100) / 100;
+
+      if (shareprice) {
+        temp += data.stockQuantity * shareprice;
+      }
+    });
+
+    setfinaldata([
+      {
+        browser: "Cash",
+        visitors: Math.round(userdata.Balance * 100) / 100,
+        fill: "var(--color-chrome)",
+      },
+      { browser: "Equity", visitors: temp, fill: "var(--color-safari)" },
+    ]);
+  }, [stockprices]);
 
   return (
     <Card className="flex flex-col border-0 sm:w-1/2 ">
@@ -78,8 +122,8 @@ export function Component() {
               data={chartData}
               dataKey="visitors"
               nameKey="browser"
-              innerRadius={60}
-              strokeWidth={5}
+              innerRadius={50}
+              strokeWidth={4}
             >
               <Label
                 content={({ viewBox }) => {
@@ -94,7 +138,7 @@ export function Component() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-xl font-bold"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
@@ -102,9 +146,7 @@ export function Component() {
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
-                        >
-                          Visitors
-                        </tspan>
+                        ></tspan>
                       </text>
                     );
                   }

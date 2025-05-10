@@ -10,14 +10,13 @@ const page = () => {
   const [Userdata, setdata] = useState([]);
   const [stockprices, setstockprices] = useState([]);
   const [color, setcolor] = useState([]);
+  const [piechart, setpiechart] = useState();
 
   let jwt = "";
 
   //fetching users stock holdings
 
   let fetchdata = async () => {
-    console.log(jwt);
-    console.log("hi");
     let responce = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/data`,
       {
@@ -34,6 +33,7 @@ const page = () => {
     }
     let data = await responce.json();
     setdata(data.ShareHoldings);
+    setpiechart(data);
   };
 
   useEffect(() => {
@@ -42,24 +42,32 @@ const page = () => {
   }, []);
 
   // socket config //
-  const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
-    auth: {
-      token: jwt,
-    },
-  });
+  useEffect(() => {
+    const server = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`, {
+      auth: {
+        token: jwt,
+      },
+    });
 
-  server.on("connect", () => {
-    console.log("socketid:", server.id);
-  });
+    server.on("connect", () => {
+      console.log("socketid:", server.id);
+    });
 
-  server.on("price-change", (data, color) => {
-    setstockprices(data);
-    setcolor(color);
-  });
+    const handlePriceChange = (data, color) => {
+      setstockprices(data);
+      setcolor(color);
+    };
+
+    server.on("price-change", handlePriceChange);
+    return () => {
+      server.off("price-change", handlePriceChange);
+      server.disconnect();
+    };
+  }, []);
 
   return (
     <div className="sm:flex sm:p-14 w-full justify-center items-center">
-      <Component />
+      {piechart ? <Component userdata={piechart} /> : <p>Loading...</p>}
       <div className="w-full sm:p-14 h-full flex flex-col items center overflow-auto">
         {Userdata.map((data, i) => {
           let shareprice = stockprices.find(

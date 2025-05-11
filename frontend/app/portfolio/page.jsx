@@ -69,31 +69,39 @@ const page = () => {
     <div className="sm:flex sm:p-14 w-full justify-center items-center">
       {piechart ? <Component userdata={piechart} /> : <p>Loading...</p>}
       <div className="w-full sm:p-14 h-full flex flex-col items center overflow-auto">
-        {Userdata.map((data, i) => {
-          let shareprice = stockprices.find(
-            (item) => item._id === data.stockId
-          )?.ShareValue;
-          shareprice = Math.round(shareprice * 100) / 100;
-          return (
-            <PortfolioCard
-              image={data.stockImg}
-              name={data.stockName}
-              price={
-                typeof shareprice === "number" && !isNaN(shareprice)
-                  ? shareprice ?? 0
-                  : 0
-              }
-              link={`Explore/${data.stockId}`}
-              key={data.stockId}
-              qty={
-                typeof shareprice === "number" && !isNaN(shareprice)
-                  ? data.stockQuantity ?? 0
-                  : 0
-              }
-              color={color[i]}
-            />
-          );
-        })}
+        {Userdata.length === 0 ? (
+          <p className=" text-3xl md:text-6xl pl-16 mt-16 w-full h-full flex justify-center items-center">
+            No Holdings Yet{" "}
+          </p>
+        ) : (
+          Userdata.map((data, i) => {
+            let shareprice = stockprices.find(
+              (item) => item._id === data.stockId
+            )?.ShareValue;
+
+            shareprice = Math.round((shareprice ?? 0) * 100) / 100;
+
+            return (
+              <PortfolioCard
+                key={data.stockId}
+                image={data.stockImg}
+                name={data.stockName}
+                price={
+                  typeof shareprice === "number" && !isNaN(shareprice)
+                    ? shareprice
+                    : 0
+                }
+                link={`Explore/${data.stockId}`}
+                qty={
+                  typeof shareprice === "number" && !isNaN(shareprice)
+                    ? data.stockQuantity ?? 0
+                    : 0
+                }
+                color={color[i]}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

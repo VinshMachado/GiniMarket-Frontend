@@ -3,7 +3,14 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import {
+  CartesianGrid,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 
 import {
   Card,
@@ -62,9 +69,13 @@ export function LineChat(Props) {
         };
 
         const graph = [...prev, newEntry];
-        if (chartData.length > 2) graph.shift();
+        if (chartData.length > 20) graph.shift();
 
-        return graph; // ✅ return the updated array
+        if (datawanted[0]?.ShareValue) {
+          return graph; // ✅ return the updated array
+        } else {
+          return [...prev];
+        }
       });
     }
   });
@@ -77,7 +88,7 @@ export function LineChat(Props) {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <LineChart
+          <AreaChart
             accessibilityLayer
             data={chartData}
             margin={{
@@ -93,18 +104,20 @@ export function LineChat(Props) {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis domain={["dataMin - 0.1", "dataMax + 0.1"]} />
+            <Tooltip formatter={(value) => value.toFixed(5)} />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent indicator="dot" hideLabel />}
             />
-            <Line
+            <Area
               dataKey="desktop"
               type="linear"
+              fill="var(--color-desktop)"
+              fillOpacity={0.4}
               stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
             />
-          </LineChart>
+          </AreaChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">

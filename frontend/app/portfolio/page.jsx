@@ -97,6 +97,7 @@ const page = () => {
                     ? data.stockQuantity ?? 0
                     : 0
                 }
+                avg={data.avgPrice}
                 color={color[i]}
               />
             );

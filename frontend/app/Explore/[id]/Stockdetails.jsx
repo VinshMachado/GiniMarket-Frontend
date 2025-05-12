@@ -70,6 +70,7 @@ export const Stockdetails = (Props) => {
             qty: qty,
             stockImg: Props.image,
             stockId: Props.id,
+            avg: price,
           }),
         }
       );
@@ -92,7 +93,7 @@ export const Stockdetails = (Props) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
           },
-          body: JSON.stringify({ name: Props.name, qty: qty }),
+          body: JSON.stringify({ name: Props.name, qty: qty, avg: price }),
         }
       );
       console.log(responce);

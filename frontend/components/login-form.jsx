@@ -47,11 +47,13 @@ export function LoginForm({ className, ...props }) {
         localStorage.setItem("TOKEN", data.token);
         console.log("token stored");
         console.log(data.token);
-
+        alert("Successfully logged in");
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.reload();
         router.push("/Explore");
       })
       .catch((e) => {
-        alert("server must be down try in 1min");
+        alert("server must be down try in 1 min");
       });
   };
   return (

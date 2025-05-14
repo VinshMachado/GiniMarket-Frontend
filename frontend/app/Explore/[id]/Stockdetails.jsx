@@ -27,6 +27,7 @@ import { io } from "socket.io-client";
 export const Stockdetails = (Props) => {
   const [price, setprice] = useState(0);
   const [color, setcolor] = useState(false);
+  const [UserBal, setBal] = useState([]);
   let jwt = "";
   const chartData = [
     {
@@ -57,27 +58,31 @@ export const Stockdetails = (Props) => {
 
   const buystock = async () => {
     try {
-      let responce = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-          },
-          body: JSON.stringify({
-            name: Props.name,
-            qty: qty,
-            stockImg: Props.image,
-            stockId: Props.id,
-            avg: price,
-          }),
-        }
-      );
-      console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`);
-      console.log(responce);
-      console.log(Props.image, Props.id);
-      console.log("success");
+      if (price * qty > UserBal) {
+        alert("not enough Funds");
+      } else {
+        let responce = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+            },
+            body: JSON.stringify({
+              name: Props.name,
+              qty: qty,
+              stockImg: Props.image,
+              stockId: Props.id,
+              avg: price,
+            }),
+          }
+        );
+        console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`);
+        console.log(responce);
+        console.log(Props.image, Props.id);
+        console.log("success");
+      }
     } catch (e) {
       alert(e);
     }
@@ -103,8 +108,28 @@ export const Stockdetails = (Props) => {
     }
   };
 
+  let fetchdata = async () => {
+    let responce = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/data`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+    if (!responce.ok) {
+      alert("Failed to fetch data");
+    }
+    let data = await responce.json();
+    setBal(data.Balance);
+  };
+
   useEffect(() => {
     jwt = localStorage.getItem("TOKEN");
+    fetchdata();
   }, []);
 
   // socket config //

@@ -43,10 +43,13 @@ export function LoginForm({ className, ...props }) {
       }),
     })
       .then((response) => {
-        response.json(), console.log(response);
+        if (!response.ok) {
+          alert("no such user or our server must be down");
+        }
+        return response.json();
       })
       .then((data) => {
-        localStorage.setItem("TOKEN", data.token);
+        if (data.ok) localStorage.setItem("TOKEN", data.token);
         console.log("token stored");
         console.log(data.token);
         alert("Successfully logged in");
@@ -54,9 +57,7 @@ export function LoginForm({ className, ...props }) {
 
         router.push("/Explore");
       })
-      .catch((e) => {
-        alert("server must be down try in 1 min");
-      });
+      .catch((e) => {});
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

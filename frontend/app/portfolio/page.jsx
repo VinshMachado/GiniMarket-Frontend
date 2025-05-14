@@ -5,12 +5,24 @@ import ExploreCard from "../CostomComp/ExploreCard";
 import Link from "next/link";
 import { PortfolioCard } from "./PortfolioCard";
 import { io, Socket } from "socket.io-client";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [Userdata, setdata] = useState([]);
   const [stockprices, setstockprices] = useState([]);
   const [color, setcolor] = useState([]);
   const [piechart, setpiechart] = useState();
+  const router = useRouter();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (!isLoggedIn) {
+      alert("Please login");
+      router.push("/login");
+    } else {
+      console.log("Logged in");
+    }
+  }, []);
 
   let jwt = "";
 

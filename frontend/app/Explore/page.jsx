@@ -1,15 +1,25 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import ExploreCard from "../CostomComp/ExploreCard";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Link } from "lucide-react";
 import { io } from "socket.io-client";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [stocks, setstocks] = useState([]);
   const [stockprices, setstockprices] = useState([]);
   const [color, setcolor] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (!isLoggedIn) {
+      alert("Please login");
+      router.push("/login");
+    } else {
+      console.log("Logged in");
+    }
+  }, []);
+
   //jwt fetching
   let jwt = "";
   useEffect(() => {

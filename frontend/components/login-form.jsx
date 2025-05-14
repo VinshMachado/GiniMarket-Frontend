@@ -42,14 +42,16 @@ export function LoginForm({ className, ...props }) {
         password: password,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json(), console.log(response);
+      })
       .then((data) => {
         localStorage.setItem("TOKEN", data.token);
         console.log("token stored");
         console.log(data.token);
         alert("Successfully logged in");
         localStorage.setItem("isLoggedIn", "true");
-        window.location.reload();
+
         router.push("/Explore");
       })
       .catch((e) => {

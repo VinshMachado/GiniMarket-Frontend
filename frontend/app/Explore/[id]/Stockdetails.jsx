@@ -28,6 +28,7 @@ export const Stockdetails = (Props) => {
   const [price, setprice] = useState(0);
   const [color, setcolor] = useState(false);
   const [UserBal, setBal] = useState([]);
+  const [holdings, setholdings] = useState([]);
   let jwt = "";
   const chartData = [
     {
@@ -87,22 +88,51 @@ export const Stockdetails = (Props) => {
       alert(e);
     }
   };
+  const fetcholdings = async () => {
+    let responce = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/data`,
+      {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+    if (!responce.ok) {
+      alert("Failed to fetch data");
+    }
+    let data = await responce.json();
+    setholdings(data.ShareHoldings);
+  };
 
   const sellstock = async () => {
+    console.log("Sell button clicked");
     try {
-      let responce = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/sell`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
-          },
-          body: JSON.stringify({ name: Props.name, qty: qty, avg: price }),
-        }
-      );
-      console.log(responce);
-      console.log("success");
+      console.log("ran");
+
+      console.log(holdings);
+      let stock = holdings.find((item) => item.stockName == Props.name);
+      console.log(stock);
+
+      if (stock && stock.stockQuantity <= qty && qty > 0) {
+        let responce = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/sell`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
+            },
+            body: JSON.stringify({ name: Props.name, qty: qty, avg: price }),
+          }
+        );
+        console.log(responce);
+        console.log("success");
+      } else {
+        alert("NO stock holdings to sell");
+      }
     } catch (e) {
       alert(e);
     }
@@ -130,6 +160,7 @@ export const Stockdetails = (Props) => {
   useEffect(() => {
     jwt = localStorage.getItem("TOKEN");
     fetchdata();
+    fetcholdings();
   }, []);
 
   // socket config //
@@ -139,9 +170,7 @@ export const Stockdetails = (Props) => {
     },
   });
 
-  server.on("connect", () => {
-    console.log("socketid:", server.id);
-  });
+  server.on("connect", () => {});
   server.on("price-change", (data, color) => {
     // Find the index of the item with matching _id
     const index = data.findIndex((item) => item._id === Props.id);
@@ -204,7 +233,14 @@ export const Stockdetails = (Props) => {
         <CardTitle>OS Shares Vs Equipped Shares</CardTitle>
       </div>
 
-      <div className="w-full flex items-center justify-center">
+      <div>
+        <CardTitle className={"flex"}>
+          Market Cap:
+          <CardTitle className={"text-green-400"}>{Props.marketCap}</CardTitle>
+        </CardTitle>
+      </div>
+
+      <div className="w-full flex  items-center justify-center">
         {/* Buy Alert Dialog */}
         <AlertDialog>
           <AlertDialogTrigger asChild>

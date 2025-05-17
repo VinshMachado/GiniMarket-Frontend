@@ -36,6 +36,7 @@ const login = () => {
             onClick={() => {
               localStorage.setItem("isLoggedIn", false);
               setLoggedIn(false);
+              localStorage.removeItem("TOKEN");
             }}
           >
             Logout

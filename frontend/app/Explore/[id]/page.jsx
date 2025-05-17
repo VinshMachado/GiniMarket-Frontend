@@ -8,7 +8,6 @@ import { Stockdetails } from "./Stockdetails";
 const page = () => {
   const { id } = useParams();
   const [stockdetails, setstockdetail] = useState({});
-  const [Userdata, setdata] = useState([]);
 
   const getData = async () => {
     console.log("ID:", id); // Ensure this logs correctly
@@ -37,32 +36,6 @@ const page = () => {
       console.error("Error fetching stock details:", error);
     }
   };
-  let jwt = "";
-
-  let fetchdata = async () => {
-    let responce = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/data`,
-      {
-        method: "GET",
-
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    );
-    if (!responce.ok) {
-      alert("Failed to fetch data");
-    }
-    let data = await responce.json();
-    setdata(data);
-    console.log(data.Balance);
-  };
-
-  useEffect(() => {
-    jwt = localStorage.getItem("TOKEN");
-    fetchdata();
-  }, []);
 
   useEffect(() => {
     getData();
@@ -71,6 +44,7 @@ const page = () => {
     <div className="w-full flex flex-col  justify-center items-center">
       <div className="w-full flex justify-center items-center  flex-wrap h-auto">
         <LineChat
+          className={"m-5"}
           stockname={
             stockdetails.StockName ? stockdetails.StockName : "Loading"
           }
@@ -78,6 +52,7 @@ const page = () => {
         />
 
         <Stockdetails
+          className={"m-5"}
           id={stockdetails._id}
           image={stockdetails.ImageUrl}
           name={stockdetails.StockName}
@@ -85,9 +60,9 @@ const page = () => {
           price={stockdetails.ShareValue}
           os={stockdetails.OSshares}
           equiped={stockdetails.EqupiedShares}
+          marketCap={stockdetails.marketCap}
         />
       </div>
-      hello
     </div>
   );
 };

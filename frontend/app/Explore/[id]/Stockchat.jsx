@@ -56,29 +56,31 @@ export function LineChat(Props) {
     },
   });
 
-  server.on("connect", () => {
-    console.log("socketid:", server.id);
-  });
-  server.on("price-change", (data) => {
-    let datawanted = data.filter((item) => item._id == Props.stockid);
-    if (data) {
+  server.on("connect", () => {});
+
+  useEffect(() => {
+    const handlePriceChange = (data) => {
+      const datawanted = data.find((item) => item._id === Props.stockid);
+      if (!datawanted?.ShareValue) return;
+
       setdata((prev) => {
-        const newEntry = {
-          month: "",
-          desktop: datawanted[0]?.ShareValue,
-        };
+        const last = prev[prev.length - 1];
+        if (last?.desktop === datawanted.ShareValue) return prev;
 
+        const newEntry = { month: "", desktop: datawanted.ShareValue };
         const graph = [...prev, newEntry];
-        if (chartData.length > 20) graph.shift();
-
-        if (datawanted[0]?.ShareValue) {
-          return graph; // ✅ return the updated array
-        } else {
-          return [...prev];
-        }
+        if (graph.length > 10) graph.shift();
+        return graph;
       });
-    }
-  });
+    };
+
+    server.on("price-change", handlePriceChange);
+
+    // 🔴 CLEAN UP to avoid memory leaks
+    return () => {
+      server.off("price-change", handlePriceChange);
+    };
+  }, [Props.stockid]);
 
   return (
     <Card className="sm:w-3/5">
@@ -125,7 +127,7 @@ export function LineChat(Props) {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing Live Graph Of{` ${Props.stockname},${Props.stockid}`}
+          Showing Live Graph Of{` ${Props.stockname}`}
         </div>
       </CardFooter>
     </Card>

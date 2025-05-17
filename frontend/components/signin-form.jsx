@@ -51,6 +51,7 @@ export function SigninForm({ className, ...props }) {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("TOKEN", data.token);
+        localStorage.setItem("isLoggedIn", "true");
         console.log("token stored");
       })
       .catch((e) => {

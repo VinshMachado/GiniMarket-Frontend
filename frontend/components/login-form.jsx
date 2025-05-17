@@ -50,8 +50,10 @@ export function LoginForm({ className, ...props }) {
       })
       .then((data) => {
         if (data.ok) localStorage.setItem("TOKEN", data.token);
+        console.log("in local:", localStorage.getItem("TOKEN"));
         console.log("token stored");
         console.log(data.token);
+        localStorage.setItem("TOKEN", data.token);
         alert("Successfully logged in");
         localStorage.setItem("isLoggedIn", "true");
 

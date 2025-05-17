@@ -44,7 +44,7 @@ const page = () => {
     <div className="w-full flex flex-col  justify-center items-center">
       <div className="w-full flex justify-center items-center  flex-wrap h-auto">
         <LineChat
-          className={"m-5"}
+          className={"sm:m-5 sm:w-full"}
           stockname={
             stockdetails.StockName ? stockdetails.StockName : "Loading"
           }

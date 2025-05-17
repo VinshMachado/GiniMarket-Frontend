@@ -85,7 +85,7 @@ export function LineChat(Props) {
   return (
     <Card className="sm:w-3/5">
       <CardHeader>
-        <CardTitle>Line Chart </CardTitle>
+        <CardTitle>LIVE STOCK DATA </CardTitle>
         <CardDescription>live</CardDescription>
       </CardHeader>
       <CardContent>

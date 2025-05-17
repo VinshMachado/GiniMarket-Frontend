@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <div className="w-full h-30  flex justify-between items-center flex-wrap">
       <Link href="/">
-        <div className="ml-10">LOGO</div>
+        <img src="/Gini.png" className="w-auto ml-3 sm:h-20 h-10" />
       </Link>
 
       <div className="mr-7 sm:w-96  sm:text-2xl  flex justify-center items-center">

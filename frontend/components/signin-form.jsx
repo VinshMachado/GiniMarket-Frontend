@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 export function SigninForm({ className, ...props }) {
   const [password, setpassword] = useState("");
   const [user, Setuser] = useState("");
   const [confirmPass, setconfirmpass] = useState("");
+  const router = useRouter();
 
   let Passupdate = (e) => {
     if (!e) return;
@@ -53,6 +55,7 @@ export function SigninForm({ className, ...props }) {
         localStorage.setItem("TOKEN", data.token);
         localStorage.setItem("isLoggedIn", "true");
         console.log("token stored");
+        router.push("/Explore");
       })
       .catch((e) => {
         console.error("Error:", e);

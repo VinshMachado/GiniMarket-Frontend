@@ -21,11 +21,11 @@ export function LoginForm({ className, ...props }) {
 
   let Passupdate = (e) => {
     if (!e) return;
-    setpassword(e.target.value);
+    setpassword(e.target.value.toLowerCase);
   };
   let Userupdate = (e) => {
     if (!e) return;
-    Setuser(e.target.value);
+    Setuser(e.target.value.toLowerCase());
   };
 
   //storing token//

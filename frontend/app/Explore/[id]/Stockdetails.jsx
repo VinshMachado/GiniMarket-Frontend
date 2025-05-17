@@ -113,10 +113,11 @@ export const Stockdetails = (Props) => {
       console.log("ran");
 
       console.log(holdings);
-      let stock = holdings.find((item) => item.stockName == Props.name);
-      console.log(stock);
+      let stock = await holdings.find((item) => item.stockName == Props.name);
+      console.log(stock.stockQuantity);
+      console.log(qty);
 
-      if (stock && stock.stockQuantity <= qty && qty > 0) {
+      if (stock.stockQuantity >= qty) {
         let responce = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/sell`,
           {
@@ -130,6 +131,7 @@ export const Stockdetails = (Props) => {
         );
         console.log(responce);
         console.log("success");
+        alert("stock sold");
       } else {
         alert("NO stock holdings to sell");
       }

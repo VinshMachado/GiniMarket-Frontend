@@ -63,6 +63,12 @@ const Navbar = () => {
 
       <div className="mr-7 sm:w-96  sm:text-2xl  flex justify-center items-center">
         <Link
+          className="  hover:border-b-2 hover:border-black font-poppins pb-2"
+          href="/leaderboards"
+        >
+          LeaderBoards
+        </Link>
+        <Link
           className="ml-5  hover:border-b-2 hover:border-black font-poppins pb-2"
           href="/Explore"
         >

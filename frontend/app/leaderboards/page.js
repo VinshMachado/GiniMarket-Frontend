@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useState } from "react";
-const page = () => {
+const Page = () => {
   const [players, setplayers] = useState([
     { _id: 1, Name: "Alice", Balance: 95 },
   ]);
@@ -56,4 +56,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

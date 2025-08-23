@@ -82,6 +82,7 @@ export const Stockdetails = (Props) => {
         console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/buy`);
         console.log(responce);
         console.log(Props.image, Props.id);
+        alert("Bought Stock");
         console.log("success");
       }
     } catch (e) {

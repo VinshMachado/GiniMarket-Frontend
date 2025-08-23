@@ -115,10 +115,10 @@ export const Stockdetails = (Props) => {
 
       console.log(holdings);
       let stock = await holdings.find((item) => item.stockName == Props.name);
-      console.log(stock.stockQuantity);
+      console.log(stock?.stockQuantity);
       console.log(qty);
 
-      if (stock.stockQuantity >= qty) {
+      if (stock?.stockQuantity >= qty) {
         let responce = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/sell`,
           {

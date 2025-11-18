@@ -18,6 +18,7 @@ export function SigninForm({ className, ...props }) {
   const [user, Setuser] = useState("");
   const [confirmPass, setconfirmpass] = useState("");
   const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   let Passupdate = (e) => {
     if (!e) return;
@@ -40,6 +41,7 @@ export function SigninForm({ className, ...props }) {
     }
     let url = process.env.NEXT_PUBLIC_BACKEND_URL;
     console.log(url);
+    setIsProcessing(true);
     await fetch(`${url}/user/signin`, {
       method: "POST",
       headers: {
@@ -55,49 +57,60 @@ export function SigninForm({ className, ...props }) {
         localStorage.setItem("TOKEN", data.token);
         localStorage.setItem("isLoggedIn", "true");
         console.log("token stored");
+        alert("success");
+        setIsProcessing(false);
         router.push("/Explore");
       })
       .catch((e) => {
         console.error("Error:", e);
+        alert(e);
       });
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome </CardTitle>
-          <CardDescription>Please Sign In</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6">
+      {isProcessing ? (
+        <div className="flex items-center justify-center p-4 text-lg font-medium">
+          Loading
+          <span className="animate-bounce">.</span>
+          <span className="animate-bounce delay-150">.</span>
+          <span className="animate-bounce delay-300">.</span>
+        </div>
+      ) : (
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">Welcome </CardTitle>
+            <CardDescription>Please Sign In</CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="grid gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="email">Username</Label>
-                <Input placeholder="Username" onChange={Userupdate} />
-              </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+              <div className="grid gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="email">Username</Label>
+                  <Input placeholder="Username" onChange={Userupdate} />
                 </div>
-                <Input type="password" onChange={Passupdate} />
-              </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Confirm Password</Label>
+                <div className="grid gap-3">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                  </div>
+                  <Input type="password" onChange={Passupdate} />
                 </div>
-                <Input type="confirmpassword" onChange={confirmPassUpdate} />
+                <div className="grid gap-3">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Confirm Password</Label>
+                  </div>
+                  <Input type="confirmpassword" onChange={confirmPassUpdate} />
+                </div>
+                <Button
+                  className="w-full bg-black text-white"
+                  onClick={getToken}
+                >
+                  Sign In
+                </Button>
               </div>
-              <Button className="w-full bg-black text-white" onClick={getToken}>
-                Sign In
-              </Button>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

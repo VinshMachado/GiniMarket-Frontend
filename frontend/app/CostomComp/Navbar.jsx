@@ -56,7 +56,7 @@ const login = () => {
 
 const Navbar = () => {
   return (
-    <div className="w-full h-30  flex justify-between items-center flex-wrap">
+    <div className="w-full h-30 text-sm sm:text-lg m-4 pr-2  sm:m-0 flex justify-between items-center flex-wrap">
       <Link href="/">
         <img src="/Gini.png" className="w-auto ml-3 sm:h-20 h-10" />
       </Link>
